@@ -1,3 +1,7 @@
+Instal NASM on linux:
+
+`sudo apt-get install nasm`
+
 Running on linux:
 
 `nasm -f elf32 linux.asm`
