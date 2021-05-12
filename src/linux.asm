@@ -1,11 +1,11 @@
-MAX_ARG     equ     6 ; define o numero maximo de argumentos que o programa pode receber
+MAX_ARG     equ     10 ; define o numero maximo de argumentos que o programa pode receber
 
 SECTION     .data
 err_msg_max    db      "Limite de argumentos excedidos", 10
 erro_msg      equ     $-err_msg_max
-next_line  db      10
-NEWLINE: db 0xa, 0xd
-LENGTH: equ $-NEWLINE
+proxima_linha  db      10
+NOVALINHA: db 0xa, 0xd
+TAMANHO: equ $-NOVALINHA
 
 SECTION     .text
 global      _start
@@ -42,8 +42,8 @@ ProximoArgumento:
     push    ebx ; Insere elemento na pilha pra poder usar o ebx e nao da seg fault
     mov     eax, 0x4
 	mov     ebx, 0x1
-	mov     ecx, NEWLINE
-	mov     edx, LENGTH
+	mov     ecx, NOVALINHA
+	mov     edx, TAMANHO
 	int     0x80
     pop     ebx ; remove o elemento da pilha pra poder voltar a posicao anterior do ponteiro
 
