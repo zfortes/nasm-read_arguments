@@ -1,4 +1,4 @@
-MAX_ARG     equ     5 ; define o numero maximo de argumentos que o programa pode receber
+MAX_ARG     equ     6 ; define o numero maximo de argumentos que o programa pode receber
 
 SECTION     .data
 err_msg_max    db      "Limite de argumentos excedidos", 10
@@ -21,11 +21,9 @@ _start:
     mov     ebp, esp
 
     cmp     dword [ebp + 4], 1
-    je      SemArgumentos                           ; no args entered
-    ; uncomment the following 2 lines to limit args entered
-    ; and set MAX_ARG to Total args wanted + 1
-    cmp     dword [ebp + 4], MAX_ARG        ; check total args entered
-    ja      MuitosArgumentos                     ; if total is greater than MAX_ARG, show error and quit
+    je      SemArgumentos                   ; sem argumentos de entrada
+    cmp     dword [ebp + 4], MAX_ARG        ; checar o total de argumentos de entrada
+    ja      MuitosArgumentos                ; se o total for maior que MAX_ARG mostrar erro e encerrar
    
     mov     ebx, 3
 
@@ -35,10 +33,10 @@ ProximoArgumento:
     jz      Exit
 
     call    TamanhoString
-    push    edx                             ; save string length for reverse
+    push    edx                             ; salvar o tamanho da string para o inverso
 
     mov     ecx, dword [ebp + 4 * ebx]
-    call    MostraArgumentos                     ; display arg text normally
+    call    MostraArgumentos                ; imprimir argumento
     
     ; Nova linha
     push    ebx ; Insere elemento na pilha pra poder usar o ebx e nao da seg fault
@@ -49,14 +47,13 @@ ProximoArgumento:
 	int     0x80
     pop     ebx ; remove o elemento da pilha pra poder voltar a posicao anterior do ponteiro
 
-    pop     edi                             ; move string length into edi
+    pop     edi                             ; passa o tamanho da string para edi
     mov     esi, dword [ebp + 4 * ebx]
-    inc     ebx                             ; step arg array index
+    inc     ebx
     jmp     ProximoArgumento
 
 SemArgumentos:
-   ; No args entered,
-   ; start program without args here
+   ; Nao ha argumentos entao finaliza
     jmp     Exit
 
 MostraArgumentos:
